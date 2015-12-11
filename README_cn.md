@@ -39,8 +39,8 @@ kafka在官网已经描述的非常详细，在这里就不过多说明，安装
 1.下载源码(根据自己的系统下载对应的[安装包](http://golang.org/dl/))
 ```sh
 $ cd /data/programfiles
-$ wget -c --no-check-certificate https://storage.googleapis.com/golang/go1.5.linux-amd64.tar.gz
-$ tar -xvf go1.5.linux-amd64.tar.gz -C /usr/local
+$ wget -c --no-check-certificate https://storage.googleapis.com/golang/go1.5.2.linux-amd64.tar.gz
+$ tar -xvf go1.5.2.linux-amd64.tar.gz -C /usr/local
 ```
 2.配置GO环境变量
 (这里我加在/etc/profile.d/golang.sh)
@@ -56,7 +56,7 @@ $ source /etc/profile
 ### 四、部署goim
 1.下载goim及依赖包
 ```sh
-$ yum install hg
+$ yum install hg  ##(sudo apt-get install mercurial)
 $ go get -u github.com/ilovyan/goim
 $ cd /data/apps/go/src/github.com/ilovyan/goim
 $ go get ./...
