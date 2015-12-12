@@ -37,5 +37,6 @@ func (a *DefaultAuther) Auth(token string) (userId int64, roomId int32) {
 	if roomId64, err = strconv.ParseInt(tokenRid, 10, 64); err != nil {
 		roomId64 = define.NoRoom
 	}
+	roomId = int32(roomId64)
 	return
 }
