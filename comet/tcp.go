@@ -224,7 +224,7 @@ func (server *Server) authTCP(rr *bufio.Reader, wr *bufio.Writer, ch *Channel) (
 	if subKey, ch.RoomId, heartbeat, err = server.operator.Connect(p); err != nil {
 		return
 	}
-	p.Body = nil
+	//p.Body = nil
 	p.Operation = define.OP_AUTH_REPLY
 	if err = server.writeTCPResponse(ch, wr, p); err != nil {
 		return
