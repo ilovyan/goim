@@ -58,7 +58,7 @@ curl -d "{\"u\":[1,2,3,4,5],\"m\":{\"test\":1}}" http://127.0.0.1:7172/1/pushs
  * Example request
 
 ```sh
-curl -d "{\"test\": 1}" http://172.16.0.239:7172/1/push/all
+curl -d "{\"test\": 1}" http://127.0.0.1:7172/1/push/all
 ```
 
  * Response

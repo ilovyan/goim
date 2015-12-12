@@ -110,7 +110,7 @@ Android: [Android](https://github.com/roamdy/goim-sdk)
 iOS: [iOS](https://github.com/roamdy/goim-oc-sdk)
 
 ## 文档
-[push http协议文档](https://github.com/Terry-Mao/goim/blob/master/doc/push.md)推送接口
+[push http协议文档](https://github.com/ilovyan/goim/blob/master/doc/push.md)推送接口
 
 ## 集群
 
