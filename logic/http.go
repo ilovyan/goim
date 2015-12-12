@@ -3,7 +3,7 @@ package main
 import (
 	log "code.google.com/p/log4go"
 	"encoding/json"
-	inet "github.com/Terry-Mao/goim/libs/net"
+	inet "github.com/ilovyan/goim/libs/net"
 	"io/ioutil"
 	"net"
 	"net/http"

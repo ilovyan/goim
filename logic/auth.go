@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/Terry-Mao/goim/libs/define"
+	"github.com/ilovyan/goim/libs/define"
 	"strconv"
+	"strings"
 )
 
 // developer could implement "ThirdAuth" interface for decide how get userId, or roomId
@@ -19,11 +20,22 @@ func NewDefaultAuther() *DefaultAuther {
 
 func (a *DefaultAuther) Auth(token string) (userId int64, roomId int32) {
 	var err error
-	if userId, err = strconv.ParseInt(token, 10, 64); err != nil {
+	var tokenUid string
+	var tokenRid string
+	var roomId64 int64
+
+	if strings.ContainsAny(token, "|") {
+		uidAndRid := strings.Split(token, "|")
+		if len(uidAndRid) == 2 {
+			tokenUid = uidAndRid[0]
+			tokenRid = uidAndRid[1]
+		}
+	}
+	if userId, err = strconv.ParseInt(tokenUid, 10, 64); err != nil {
 		userId = 0
-		roomId = define.NoRoom
-	} else {
-		roomId = 1 // only for debug
+	}
+	if roomId64, err = strconv.ParseInt(tokenRid, 10, 64); err != nil {
+		roomId64 = define.NoRoom
 	}
 	return
 }

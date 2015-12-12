@@ -3,7 +3,7 @@ package main
 import (
 	log "code.google.com/p/log4go"
 	"crypto/tls"
-	"github.com/Terry-Mao/goim/libs/define"
+	"github.com/ilovyan/goim/libs/define"
 	"golang.org/x/net/websocket"
 	"math/rand"
 	"net"

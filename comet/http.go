@@ -4,7 +4,7 @@ import (
 	"bufio"
 	log "code.google.com/p/log4go"
 	"encoding/json"
-	"github.com/Terry-Mao/goim/libs/define"
+	"github.com/ilovyan/goim/libs/define"
 	"math/rand"
 	"net"
 	"net/http"

@@ -3,7 +3,7 @@ package main
 import (
 	log "code.google.com/p/log4go"
 	"flag"
-	"github.com/Terry-Mao/goim/libs/perf"
+	"github.com/ilovyan/goim/libs/perf"
 	"runtime"
 )
 

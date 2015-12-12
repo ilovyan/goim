@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	log "code.google.com/p/log4go"
-	"github.com/Terry-Mao/goim/libs/define"
-	"github.com/Terry-Mao/goim/libs/encoding/binary"
+	"github.com/ilovyan/goim/libs/define"
+	"github.com/ilovyan/goim/libs/encoding/binary"
 	"net"
 	"sync"
 	"time"

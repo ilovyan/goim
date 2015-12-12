@@ -2,7 +2,7 @@ package main
 
 import (
 	log "code.google.com/p/log4go"
-	"github.com/Terry-Mao/goim/libs/hash/cityhash"
+	"github.com/ilovyan/goim/libs/hash/cityhash"
 	"time"
 )
 

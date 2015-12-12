@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	log "code.google.com/p/log4go"
-	"github.com/Terry-Mao/goim/libs/perf"
+	"github.com/ilovyan/goim/libs/perf"
 )
 
 func main() {
