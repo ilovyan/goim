@@ -2,29 +2,24 @@ package main
 
 import (
 	"sync"
-)
-
-const (
-	// signal command
-	signalNum   = 1
-	protoFinish = 0
-	protoReady  = 1
+	"time"
 )
 
 // Channel used by message pusher send msg to write goroutine.
 type Channel struct {
 	RoomId   int32
 	signal   chan int
-	CliProto Ring
 	SvrProto Ring
+	CliProto Proto
 	cLock    sync.Mutex
+	SLock    sync.Mutex // sending buffer lock
+	Buf      [RawHeaderSize]byte
 }
 
-func NewChannel(cliProto, svrProto int, rid int32) *Channel {
+func NewChannel(svrProto int, rid int32) *Channel {
 	c := new(Channel)
 	c.RoomId = rid
 	c.signal = make(chan int, signalNum)
-	c.CliProto.Init(cliProto)
 	c.SvrProto.Init(svrProto)
 	return c
 }
@@ -33,15 +28,12 @@ func NewChannel(cliProto, svrProto int, rid int32) *Channel {
 func (c *Channel) PushMsg(ver int16, operation int32, body []byte) (err error) {
 	var proto *Proto
 	c.cLock.Lock()
-	// fetch a proto from channel free list
-	if proto, err = c.SvrProto.Set(); err != nil {
-		c.cLock.Unlock()
-		return
+	if proto, err = c.SvrProto.Set(); err == nil {
+		proto.Ver = ver
+		proto.Operation = operation
+		proto.Body = body
+		c.SvrProto.SetAdv()
 	}
-	proto.Ver = ver
-	proto.Operation = operation
-	proto.Body = body
-	c.SvrProto.SetAdv()
 	c.cLock.Unlock()
 	c.Signal()
 	return
@@ -56,16 +48,16 @@ func (c *Channel) PushMsgs(ver []int32, operations []int32, bodies [][]byte) (id
 	c.cLock.Lock()
 	for n = 0; n < int32(len(ver)); n++ {
 		// fetch a proto from channel free list
-		if proto, err = c.SvrProto.Set(); err != nil {
-			goto finish
+		if proto, err = c.SvrProto.Set(); err == nil {
+			proto.Ver = int16(ver[n])
+			proto.Operation = operations[n]
+			proto.Body = bodies[n]
+			c.SvrProto.SetAdv()
+			idx = n
+		} else {
+			break
 		}
-		proto.Ver = int16(ver[n])
-		proto.Operation = operations[n]
-		proto.Body = bodies[n]
-		c.SvrProto.SetAdv()
-		idx = n
 	}
-finish:
 	c.cLock.Unlock()
 	c.Signal()
 	return
@@ -74,6 +66,17 @@ finish:
 // Ready check the channel ready or close?
 func (c *Channel) Ready() bool {
 	return (<-c.signal) == protoReady
+}
+
+// ReadyWithTimeout check the channel ready or close?
+func (c *Channel) ReadyWithTimeout(timeout time.Duration) bool {
+	var s int
+	select {
+	case s = <-c.signal:
+		return s == protoReady
+	case <-time.After(timeout):
+		return false
+	}
 }
 
 // Signal send signal to the channel, protocol ready.
@@ -87,9 +90,6 @@ func (c *Channel) Signal() {
 
 // Close close the channel.
 func (c *Channel) Close() {
-	// don't use close chan, Signal can be reused
-	// if chan full, writer goroutine next fetch from chan will exit
-	// if chan empty, send a 0(close) let the writer exit
 	select {
 	case c.signal <- protoFinish:
 	default:
