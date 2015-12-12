@@ -95,7 +95,7 @@ $ nohup $GOPATH/bin/job -c $GOPATH/bin/job.conf 2>&1 > /data/logs/goim/panic-job
 
 ### 六、测试
 
-推送协议可查看[push http协议文档](https://github.com/Terry-Mao/goim/blob/master/doc/push.md)
+推送协议可查看[push http协议文档](https://github.com/ilovyan/goim/blob/master/doc/push.md)
 
 ## 配置
 
